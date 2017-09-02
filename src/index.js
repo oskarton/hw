@@ -5,6 +5,9 @@
  Напишите аналог встроенного метода forEach для работы с массивами
  */
 function forEach(array, fn) {
+	for(var i = 0; i < array.length; i++) {
+		fn(array[i], i, array);
+	}
 }
 
 /*
@@ -12,6 +15,12 @@ function forEach(array, fn) {
  Напишите аналог встроенного метода map для работы с массивами
  */
 function map(array, fn) {
+	var changed = [];
+	for(var i = 0; i < array.length; i++) {
+		changed.push(fn(array[i], i, array));
+	}
+
+	return changed;
 }
 
 /*
@@ -19,6 +28,17 @@ function map(array, fn) {
  Напишите аналог встроенного метода reduce для работы с массивами
  */
 function reduce(array, fn, initial) {
+	var i = 1;
+	var prev = array[0];
+	if(initial !== undefined) {
+		prev = initial;
+		i = 0;
+	}
+	for(i; i < array.length; i++) {
+		prev = fn(prev, array[i], i, array);
+	}
+
+	return prev;
 }
 
 /*
@@ -27,6 +47,7 @@ function reduce(array, fn, initial) {
  Функция должна удалить указанное свойство из указанного объекта
  */
 function deleteProperty(obj, prop) {
+	delete obj[prop];
 }
 
 /*
@@ -35,6 +56,11 @@ function deleteProperty(obj, prop) {
  Функция должна проверить существует ли укзаанное свойство в указанном объекте
  */
 function hasProperty(obj, prop) {
+	if(prop in obj) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /*
@@ -42,6 +68,12 @@ function hasProperty(obj, prop) {
  Функция должна получить все перечисляемые свойства объекта и вернуть их в виде массива
  */
 function getEnumProps(obj) {
+	var props = [];
+	for(var key in obj) {
+		props.push(key);
+	}
+
+	return props;
 }
 
 /*
@@ -49,6 +81,12 @@ function getEnumProps(obj) {
  Функция должна перебрать все свойства объекта, преобразовать их имена в верхний регистра и вернуть в виде массива
  */
 function upperProps(obj) {
+	var props = [];
+	for(var key in obj) {
+		props.push(key.toUpperCase());
+	}
+
+	return props;
 }
 
 /*
@@ -56,6 +94,18 @@ function upperProps(obj) {
  Напишите аналог встроенного метода slice для работы с массивами
  */
 function slice(array, from, to) {
+	if(!from) {
+		from = 0;
+	}
+	if(!to) {
+		to = array.length;
+	}
+	var sliced = [];
+	for(var i = from; i < to; i++) {
+		sliced.push(array[i]);
+	}
+
+	return sliced;
 }
 
 /*
