@@ -3,6 +3,7 @@ const nativeMap = Array.prototype.map;
 const nativeReduce = Array.prototype.reduce;
 
 import { assert } from 'chai';
+
 import { randomValue as random, randomNumberArray } from '../helper';
 import {
     forEach,
@@ -39,7 +40,7 @@ describe('ДЗ 3 - объекты и массивы', () => {
 
             forEach(array, (el, i, a) => assert.strictEqual(a, array));
         });
-    });
+
 
     describe('map', () => {
         it('должна вызывать функцию для каждого элемента массива и передавать элемент первым аргументом', () => {
@@ -179,8 +180,10 @@ describe('ДЗ 3 - объекты и массивы', () => {
 
             assert.isTrue(hasProperty(obj, 'a'));
             assert.isFalse(hasProperty(obj, 'b'));
+
         });
     });
+
 
     describe('getEnumProps', () => {
         it('должна возвращать массив только с перечисляемыми свойствами', () => {
@@ -195,6 +198,7 @@ describe('ДЗ 3 - объекты и массивы', () => {
         });
     });
 
+
     describe('upperProps', () => {
         it('должна возвращать массив с именами свойств и преобразовывать эти имена в верхний регистр', () => {
             let obj = { a: 1, b: 2 };
@@ -202,8 +206,9 @@ describe('ДЗ 3 - объекты и массивы', () => {
             let result = upperProps(obj);
 
             assert.deepEqual(result, target);
+
         });
-    });
+
 
     describe('slice', () => {
         it('общая проверка работоспособности', () => {
@@ -276,6 +281,7 @@ describe('ДЗ 3 - объекты и массивы', () => {
             target = nativeSlice.call(array, -9999, -4);
             result = slice(array, -9999, -4);
             assert.deepEqual(result, target);
+
         });
     });
 
@@ -289,6 +295,7 @@ describe('ДЗ 3 - объекты и массивы', () => {
             obj.b = 5;
 
             assert.deepEqual(obj, { a: 4, b: 25 });
+
         });
     });
 });
