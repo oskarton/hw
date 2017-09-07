@@ -7,8 +7,11 @@
  * @return {Element}
  */
 function createDivWithText(text) {
-}
+    var div = document.createElement('div');
+    div.innerHTML = text;
 
+    return div;
+}
 /**
  * Функция должна создать элемент с тегом A, установить значение для атрибута href и вернуть получившийся элемент
  *
@@ -16,6 +19,10 @@ function createDivWithText(text) {
  * @return {Element}
  */
 function createAWithHref(hrefValue) {
+    var link = document.createElement('a');
+    link.setAttribute('href', hrefValue);
+
+    return link;
 }
 
 /**
@@ -25,6 +32,7 @@ function createAWithHref(hrefValue) {
  * @param {Element} where - куда вставлять
  */
 function prepend(what, where) {
+	where.prepend(what);
 }
 
 /**
@@ -42,6 +50,15 @@ function prepend(what, where) {
  * т.к. следующим соседом этих элементов является элемент с тегом P
  */
 function findAllPSiblings(where) {
+	var res = [];
+	var childs = where.children;
+    for (var i = 0; i < childs.length; i++) {
+        if (i < (childs.length - 1) && childs[i].nextElementSibling.tagName == 'P') {
+            res.push(childs[i]);
+        }
+    }
+
+	return res;
 }
 
 /**
