@@ -35,6 +35,12 @@ module.exports = {
             title: 'Loft School sample project',
             template: 'index.hbs'
         }),
+        new HtmlPlugin({
+            title: 'Div Drag And Drop',
+            template: 'dnd.hbs',
+            filename: 'dnd.html',
+            chunks: ['dnd']
+        }),
         new CleanWebpackPlugin(['dist'])
     ]
 };
