@@ -94,25 +94,33 @@ function upperProps(obj) {
  Задача 8 *:
  Напишите аналог встроенного метода slice для работы с массивами
  */
-function slice(array, from = 0, to = array.length) {
-	var sliced = [];
-	if(Math.abs(to) > array.length) {
-		to = array.length;
-	} else if(Math.abs(from) > array.length) {
-		from = array.length;
-	}
-	if(to < from) {
-	    if(to < 0){
-	    	to = array.length + to;
-	    } else {
-	    	to = array.length;
-	    }
-	}
-	for(var i = from; i < to; i++) {
-		sliced.push(array[i]);
-	}
+function slice (array, from = 0, to = array.length) {
+    var sliced = [];
+    if (to < 0) {
+        if (Math.abs(to) < from){
+            to = array.length;
+        } else {
+            to = array.length + to;
+        }
+    }
+    if (to > array.length) {
+        to = array.length;
+    }
+    if (from > array.length) {
+        from = array.length;
+    }
+    if (from < 0) {
+        if (Math.abs(from) <= array.length) {
+            from = array.length + from;
+        } else {
+            from = 0;
+        }
+    }
+    for (var i = from; i < to; i++) {
+        sliced.push(array[i]);
+    }
 
-	return sliced;
+    return sliced;
 }
 
 /*
@@ -121,6 +129,14 @@ function slice(array, from = 0, to = array.length) {
  Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
  */
 function createProxy(obj) {
+	var res = new Proxy(obj, {
+        set(target, prop, value) {
+            target[prop] = value * value;
+            return true;
+        }
+	});
+
+	return res;
 }
 
 export {
