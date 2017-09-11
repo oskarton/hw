@@ -40,7 +40,7 @@ describe('ДЗ 3 - объекты и массивы', () => {
 
             forEach(array, (el, i, a) => assert.strictEqual(a, array));
         });
-
+    });
 
     describe('map', () => {
         it('должна вызывать функцию для каждого элемента массива и передавать элемент первым аргументом', () => {
@@ -208,6 +208,7 @@ describe('ДЗ 3 - объекты и массивы', () => {
             assert.deepEqual(result, target);
 
         });
+    });
 
 
     describe('slice', () => {
