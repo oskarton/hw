@@ -142,7 +142,31 @@ function deleteTextNodesRecursive(where) {
  *   texts: 3
  * }
  */
-function collectDOMStat(root) {
+function collectDOMStat(root, stat = { tags: {}, classes: {}, texts: 0 }) {
+    var childs = root.childNodes;
+    for (var i = 0; i < childs.length; i++) {
+        if (childs[i].nodeType == 3) {
+            stat.texts++;
+        } else {
+            collectDOMStat(childs[i], stat);
+            var tagName = childs[i].tagName;
+            if (stat.tags.hasOwnProperty(tagName)) {
+                stat.tags[tagName]++;
+            } else {
+                stat.tags[tagName] = 1;
+            }
+            var tagClasses = childs[i].classList;
+            for (var k = 0; k < tagClasses.length; k++) {
+                if (stat.classes.hasOwnProperty(tagClasses[k])) {
+                    stat.classes[tagClasses[k]]++;
+                } else {
+                    stat.classes[tagClasses[k]] = 1;
+                }
+            }
+        }
+    }
+
+    return stat;
 }
 
 /**
@@ -177,6 +201,7 @@ function collectDOMStat(root) {
  * }
  */
 function observeChildNodes(where, fn) {
+
 }
 
 export {
