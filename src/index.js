@@ -1,131 +1,218 @@
 
-/* Р”Р— 3 - СЂР°Р±РѕС‚Р° СЃ РјР°СЃСЃРёРІР°РјРё Рё РѕР±СЉРµРµРєС‚Р°РјРё */
+/* �� 4 - ������ � DOM */
 
-/*
- Р—Р°РґР°С‡Р° 1:
- РќР°РїРёС€РёС‚Рµ Р°РЅР°Р»РѕРі РІСЃС‚СЂРѕРµРЅРЅРѕРіРѕ РјРµС‚РѕРґР° forEach РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РјР°СЃСЃРёРІР°РјРё
+/**
+ * ������� ������ ������� ������� � ����� DIV, ��������� � ���� ��������� ���� � ������� ������������ �������
+ *
+ * @param {string} text - �����, ������� ���������� ��������� � div
+ * @return {Element}
  */
-function forEach(array, fn) {
-	for(var i = 0; i < array.length; i++) {
-		fn(array[i], i, array);
-	}
+function createDivWithText(text) {
+    var div = document.createElement('div');
+    div.innerHTML = text;
+
+    return div;
+}
+/**
+ * ������� ������ ������� ������� � ����� A, ���������� �������� ��� �������� href � ������� ������������ �������
+ *
+ * @param {string} hrefValue - �������� ��� �������� href
+ * @return {Element}
+ */
+function createAWithHref(hrefValue) {
+    var link = document.createElement('a');
+    link.setAttribute('href', hrefValue);
+
+    return link;
 }
 
-/*
- Р—Р°РґР°С‡Р° 2:
- РќР°РїРёС€РёС‚Рµ Р°РЅР°Р»РѕРі РІСЃС‚СЂРѕРµРЅРЅРѕРіРѕ РјРµС‚РѕРґР° map РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РјР°СЃСЃРёРІР°РјРё
+/**
+ * ������� ������ ��������� ������� what � ������ �������� where
+ *
+ * @param {Element} what - ��� ���������
+ * @param {Element} where - ���� ���������
  */
-function map(array, fn) {
-	var changed = [];
-	for(var i = 0; i < array.length; i++) {
-		changed.push(fn(array[i], i, array));
-	}
-
-	return changed;
+function prepend(what, where) {
+	where.prepend(what);
 }
 
-/*
- Р—Р°РґР°С‡Р° 3:
- РќР°РїРёС€РёС‚Рµ Р°РЅР°Р»РѕРі РІСЃС‚СЂРѕРµРЅРЅРѕРіРѕ РјРµС‚РѕРґР° reduce РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РјР°СЃСЃРёРІР°РјРё
+/**
+ * ������� ������ ��������� ��� �������� �������� �������� where
+ * � ������� ������, ��������� �� ��� �������� ���������
+ * ��������� ������� ������� �������� ������� � ����� P
+ * �������� - �� �������
+ *
+ * @param {Element} where - ��� ������
+ * @return {Array<Element>}
+ *
+ * @example
+ * ��� html '<div></div><p></p><a></a><span></span><p></p>'
+ * ������� ������ �������: [div, span]
+ * �.�. ��������� ������� ���� ��������� �������� ������� � ����� P
  */
-function reduce(array, fn, initial) {
-	var i = 1;
-	var prev = array[0];
-	if(initial !== undefined) {
-		prev = initial;
-		i = 0;
-	}
-	for(i; i < array.length; i++) {
-		prev = fn(prev, array[i], i, array);
-	}
+function findAllPSiblings(where) {
+	var res = [];
+	var childs = where.children;
+    for (var i = 0; i < childs.length; i++) {
+        if (i < (childs.length - 1) && childs[i].nextElementSibling.tagName == 'P') {
+            res.push(childs[i]);
+        }
+    }
 
-	return prev;
+	return res;
 }
 
-/*
- Р—Р°РґР°С‡Р° 4:
- Р¤СѓРЅРєС†РёСЏ РїСЂРёРЅРёРјР°РµС‚ РѕР±СЉРµРєС‚ Рё РёРјСЏ СЃРІРѕР№СЃС‚РІР°, РєРѕС‚РѕСЂРѕРµ РЅРµРѕР±С…РѕРґРёРѕРј СѓРґР°Р»РёС‚СЊ РёР· РѕР±СЉРµРєС‚Р°
- Р¤СѓРЅРєС†РёСЏ РґРѕР»Р¶РЅР° СѓРґР°Р»РёС‚СЊ СѓРєР°Р·Р°РЅРЅРѕРµ СЃРІРѕР№СЃС‚РІРѕ РёР· СѓРєР°Р·Р°РЅРЅРѕРіРѕ РѕР±СЉРµРєС‚Р°
+/**
+ * ������� ������ ��������� ��� �������� ���� ���� "�������" ������ where
+ * � ������� ������, ��������� �� ���������� ����������� ������������ ���������
+ * �� ������, ��� � ��� ��������� ������, ������� ����� ����� � ���������
+ *
+ * @param {Element} where - ��� ������
+ * @return {Array<string>}
  */
-function deleteProperty(obj, prop) {
-	delete obj[prop];
+function findError(where) {
+    var result = [];
+
+    for (var i = 0; i < where.children.length; i++) {
+        result.push(where.children[i].innerText);
+    }
+
+    return result;
 }
 
-/*
- Р—Р°РґР°С‡Р° 5:
- Р¤СѓРЅРєС†РёСЏ РїСЂРёРЅРёРјР°РµС‚ РѕР±СЉРµРєС‚ Рё РёРјСЏ СЃРІРѕР№СЃС‚РІР° Рё РІРѕР·РІСЂР°С‰Р°РµС‚ true РёР»Рё false
- Р¤СѓРЅРєС†РёСЏ РґРѕР»Р¶РЅР° РїСЂРѕРІРµСЂРёС‚СЊ СЃСѓС‰РµСЃС‚РІСѓРµС‚ Р»Рё СѓРєР·Р°Р°РЅРЅРѕРµ СЃРІРѕР№СЃС‚РІРѕ РІ СѓРєР°Р·Р°РЅРЅРѕРј РѕР±СЉРµРєС‚Рµ
+/**
+ * ������� ������ ��������� ��� �������� ���� �������� where
+ * � ������� �� ���� ��� ��������� ����
+ * ��� ��������!
+ * ������ ����������� ��� �������� �����,
+ * ����� �������� ����������� ��������� ��� �������� �����
+ *
+ * @param {Element} where - ��� ������
+ *
+ * @example
+ * ����� ���������� �������, ������ <div></div>������<p></p>loftchool!!!
+ * ������ ���� ������������� � <div></div><p></p>
  */
-function hasProperty(obj, prop) {
-	if(prop in obj) {
-		return true;
-	} else {
-		return false;
-	}
+function deleteTextNodes(where) {
+    for (var i = 0; i < where.childNodes.length; i++) {
+        if (where.childNodes[i].nodeType == Node.TEXT_NODE) {
+            where.childNodes[i].remove();
+        }
+    }
 }
 
-/*
- Р—Р°РґР°С‡Р° 6:
- Р¤СѓРЅРєС†РёСЏ РґРѕР»Р¶РЅР° РїРѕР»СѓС‡РёС‚СЊ РІСЃРµ РїРµСЂРµС‡РёСЃР»СЏРµРјС‹Рµ СЃРІРѕР№СЃС‚РІР° РѕР±СЉРµРєС‚Р° Рё РІРµСЂРЅСѓС‚СЊ РёС… РІ РІРёРґРµ РјР°СЃСЃРёРІР°
+/**
+ * ��������� ���������� ������� � ������������� ��������
+ * �� ���� ���������� �������� ������ ������� ��������� ��������
+ *
+ * @param {Element} where - ��� ������
+ *
+ * @example
+ * ����� ���������� �������, ������ <span> <div> <b>������</b> </div> <p>loftchool</p> !!!</span>
+ * ������ ���� ������������� � <span><div><b></b></div><p></p></span>
  */
-function getEnumProps(obj) {
-	var props = [];
-	for(var key in obj) {
-		props.push(key);
-	}
-
-	return props;
+function deleteTextNodesRecursive(where) {
+    for (var i = where.childNodes.length - 1; i >= 0; i--) {
+        if (where.childNodes[i].nodeType == 3) {
+            where.childNodes[i].remove();
+        } else {
+            deleteTextNodesRecursive(where.childNodes[i]);
+        }
+    }
 }
 
-/*
- Р—Р°РґР°С‡Р° 7:
- Р¤СѓРЅРєС†РёСЏ РґРѕР»Р¶РЅР° РїРµСЂРµР±СЂР°С‚СЊ РІСЃРµ СЃРІРѕР№СЃС‚РІР° РѕР±СЉРµРєС‚Р°, РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ РёС… РёРјРµРЅР° РІ РІРµСЂС…РЅРёР№ СЂРµРіРёСЃС‚СЂР° Рё РІРµСЂРЅСѓС‚СЊ РІ РІРёРґРµ РјР°СЃСЃРёРІР°
+/**
+ * *** �� ���������� ***
+ * ���������� ������� ���������� �� ���� ����� ������ �������� root � ������� �� � ���� �������
+ * ���������� ������ ���������:
+ * - ���������� ��������� �����
+ * - ���������� ��������� ������� ������
+ * - ���������� ��������� ������� ����
+ * ��� ������ � �������� ������������� ������������ �������� classList
+ * ������������ �� ��������� ���������� ����������
+ *
+ * @param {Element} root - ��� �������� ����������
+ * @return {{tags: Object<string, number>, classes: Object<string, number>, texts: number}}
+ *
+ * @example
+ * ��� html <div class="some-class-1"><b>������!</b> <b class="some-class-1 some-class-2">loftschool</b></div>
+ * ������ ���� ��������� ����� ������:
+ * {
+ *   tags: { DIV: 1, B: 2},
+ *   classes: { "some-class-1": 2, "some-class-2": 1 },
+ *   texts: 3
+ * }
  */
-function upperProps(obj) {
-	var props = [];
-	for(var key in obj) {
-		props.push(key.toUpperCase());
-	}
+function collectDOMStat(root, stat = { tags: {}, classes: {}, texts: 0 }) {
+    var childs = root.childNodes;
+    for (var i = 0; i < childs.length; i++) {
+        if (childs[i].nodeType == 3) {
+            stat.texts++;
+        } else {
+            collectDOMStat(childs[i], stat);
+            var tagName = childs[i].tagName;
+            if (stat.tags.hasOwnProperty(tagName)) {
+                stat.tags[tagName]++;
+            } else {
+                stat.tags[tagName] = 1;
+            }
+            var tagClasses = childs[i].classList;
+            for (var k = 0; k < tagClasses.length; k++) {
+                if (stat.classes.hasOwnProperty(tagClasses[k])) {
+                    stat.classes[tagClasses[k]]++;
+                } else {
+                    stat.classes[tagClasses[k]] = 1;
+                }
+            }
+        }
+    }
 
-	return props;
+    return stat;
 }
 
-/*
- Р—Р°РґР°С‡Р° 8 *:
- РќР°РїРёС€РёС‚Рµ Р°РЅР°Р»РѕРі РІСЃС‚СЂРѕРµРЅРЅРѕРіРѕ РјРµС‚РѕРґР° slice РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РјР°СЃСЃРёРІР°РјРё
+/**
+ * *** �� ���������� ***
+ * ������� ������ ����������� ���������� � �������� ��������� ������ �������� where
+ * ��� ������ � where ����������� ��� ��������� ��������,
+ * ���������� �������� �� ���� ��� ������ ������ ������� fn �� ����������� ����������
+ * � �������� ��������� ������ ���� ������� ����� � ����� ����������:
+ * - type: ���� ������� (insert ��� remove)
+ * - nodes: ������ �� ��������� ��� ����������� ��������� (� ����������� �� �������)
+ * ������������ ������ �������� ��� ����������� �� ������� �����������/��������� ���������
+ * ������������� ������������ MutationObserver
+ *
+ * @param {Element} where - ��� �����������
+ * @param {function(info: {type: string, nodes: Array<Element>})} fn - �������, ������� ���������� �������
+ *
+ * @example
+ * ���� � where ��� � ������ �� ��� ����� ����������� ������� div
+ * �� fn ������ ���� ������� � ����������:
+ * {
+ *   type: 'insert',
+ *   nodes: [div]
+ * }
+ *
+ * ------
+ *
+ * ���� �� where ��� �� ������ �� ��� ����� ��������� ������� div
+ * �� fn ������ ���� ������� � ����������:
+ * {
+ *   type: 'remove',
+ *   nodes: [div]
+ * }
  */
-function slice(array, from, to) {
-	if(!from) {
-		from = 0;
-	}
-	if(!to) {
-		to = array.length;
-	}
-	var sliced = [];
-	for(var i = from; i < to; i++) {
-		sliced.push(array[i]);
-	}
+function observeChildNodes(where, fn) {
 
-	return sliced;
-}
-
-/*
- Р—Р°РґР°С‡Р° 9 *:
- Р¤СѓРЅРєС†РёСЏ РїСЂРёРЅРёРјР°РµС‚ РѕР±СЉРµРєС‚ Рё РґРѕР»Р¶РЅР° РІРµСЂРЅСѓС‚СЊ Proxy РґР»СЏ СЌС‚РѕРіРѕ РѕР±СЉРµРєС‚Р°
- Proxy РґРѕР»Р¶РµРЅ РїРµСЂРµС…РІР°С‚С‹РІР°С‚СЊ РІСЃРµ РїРѕРїС‹С‚РєРё Р·Р°РїРёСЃРё Р·РЅР°С‡РµРЅРёР№ СЃРІРѕР№СЃС‚РІ Рё РІРѕР·РІРѕРґРёС‚СЊ СЌС‚Рѕ Р·РЅР°С‡РµРЅРёРµ РІ РєРІР°РґСЂР°С‚
- */
-function createProxy(obj) {
 }
 
 export {
-    forEach,
-    map,
-    reduce,
-    deleteProperty,
-    hasProperty,
-    getEnumProps,
-    upperProps,
-    slice,
-    createProxy
-
+    createDivWithText,
+    createAWithHref,
+    prepend,
+    findAllPSiblings,
+    findError,
+    deleteTextNodes,
+    deleteTextNodesRecursive,
+    collectDOMStat,
+    observeChildNodes
 };
