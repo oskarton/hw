@@ -1,3 +1,7 @@
+const nativeSlice = Array.prototype.slice;
+const nativeMap = Array.prototype.map;
+const nativeReduce = Array.prototype.reduce;
+
 import { assert } from 'chai';
 import { randomValue } from '../helper';
 import {
@@ -37,8 +41,8 @@ describe('ДЗ 4 - Работа с DOM', () => {
             let result = createDivWithText(text);
 
             assert.equal(result.innerText, text);
+
         });
-    });
 
     describe('createAWithHref', () => {
         it('должна возвращать элемент с тегом A', () => {
@@ -54,8 +58,8 @@ describe('ДЗ 4 - Работа с DOM', () => {
             let result = createAWithHref(href);
 
             assert.equal(result.getAttribute('href'), href);
+
         });
-    });
 
     describe('prepend', () => {
         it('должна добавлять элемент в начало', () => {
@@ -71,6 +75,7 @@ describe('ДЗ 4 - Работа с DOM', () => {
 
             assert.equal(where.firstChild, what);
             assert.equal(where.innerHTML, `<p>${whatText}</p>, <b>${whereText}</b>!`);
+
         });
     });
 
@@ -201,7 +206,15 @@ describe('ДЗ 4 - Работа с DOM', () => {
             where.appendChild(fragment);
 
             document.body.removeChild(where);
+
         });
+    });
+
+    describe('createProxy', () => {
+        it('должна вернуть Proxy, который возводит в квадрат любое записываемое значение', () => {
+            let obj = {};
+
+            obj = createProxy(obj);
 
         it('должна вызывать fn при удалении элементов из указанного элемента', done => {
             let where = document.createElement('div');
